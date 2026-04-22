@@ -9,31 +9,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F5F2EB;
+  --bg: #F7F5F0;
   --bg-alt: #EFEBE1;
   --card: #FFFFFF;
   --border: #E5E0D4;
   --border-soft: #EEE9DD;
-  --title: #0F2B3D;
-  --text: #1F2937;
-  --muted: #6B7280;
-  --faint: #9CA3AF;
-  --green: #2D9661;
-  --green-dk: #1F6D45;
-  --green-bg: #E7F4ED;
-  --red: #D93D2C;
-  --red-dk: #B02A1C;
-  --red-bg: #FDECEA;
-  --orange: #E37A3C;
-  --orange-dk: #C25A20;
-  --orange-bg: #FCECD9;
-  --amber: #C88A2E;
-  --amber-bg: #F7EBD1;
-  --blue: #3E7AB8;
-  --blue-bg: #E3EEF8;
-  --navy: #1D3557;
-  --purple: #7D4A8F;
-  --purple-bg: #EEE3F2;
+  --title: #060000;
+  --text: #1A1A1A;
+  --muted: #5C5C5C;
+  --faint: #8C8C8C;
+  --jll-red: #DE0614;
+  --green: #2D7A50;
+  --green-dk: #1B5E3A;
+  --green-bg: #EAF3ED;
+  --red: #DE0614;
+  --red-dk: #B00510;
+  --red-bg: #FDE8E9;
+  --orange: #D47230;
+  --orange-dk: #B85A1C;
+  --orange-bg: #FAE9D8;
+  --amber: #B87D28;
+  --amber-bg: #F5E8CF;
+  --blue: #3670A8;
+  --blue-bg: #E1ECF5;
+  --navy: #1A2F4B;
+  --purple: #6E4080;
+  --purple-bg: #ECE1F0;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
@@ -47,14 +48,38 @@ body {
 /* ═══ LAYOUT ═══ */
 .app { display: flex; flex-direction: column; min-height: 100vh; }
 .header-bar {
-  text-align: center; padding: 28px 22px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px 16px;
   border-bottom: 1px solid var(--border);
   background: var(--card);
 }
+.header-center { text-align: center; flex: 1; }
+.jll-logo {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
+  text-decoration: none;
+}
+.jll-logo-icon {
+  width: 32px; height: 32px;
+}
+.jll-logo-text {
+  font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800;
+  color: var(--title); letter-spacing: 1.5px;
+}
+.header-sub {
+  font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); font-weight: 500; margin-top: -1px;
+}
+.header-right { flex: 0 0 auto; width: 100px; }
+@media (max-width: 900px) {
+  .header-bar { flex-wrap: wrap; justify-content: center; gap: 8px; padding: 14px 16px 12px; }
+  .header-right { display: none; }
+  .jll-logo { order: -1; }
+  .header-center { flex-basis: 100%; }
+}
 h1 {
   font-family: 'Fraunces', Georgia, serif; font-weight: 800;
-  font-size: clamp(22px, 5vw, 30px); line-height: 1.15;
-  color: var(--title); letter-spacing: -0.015em; margin-bottom: 8px;
+  font-size: clamp(18px, 4vw, 24px); line-height: 1.15;
+  color: var(--title); letter-spacing: -0.015em; margin-bottom: 4px;
 }
 .byline { font-size: 13px; color: var(--muted); }
 .byline b { color: var(--title); font-weight: 600; }
@@ -113,10 +138,10 @@ h1 {
 }
 .tree-node:hover { border-color: #C7C1AE; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .tree-node.active {
-  border-color: var(--green); box-shadow: 0 0 0 3px rgba(45,150,97,0.15);
+  border-color: var(--jll-red); box-shadow: 0 0 0 3px rgba(222,6,20,0.12);
 }
 .tree-node.active[data-urgency="critical"] {
-  border-color: var(--red); box-shadow: 0 0 0 3px rgba(217,61,44,0.15);
+  border-color: var(--jll-red); box-shadow: 0 0 0 3px rgba(222,6,20,0.15);
 }
 
 .node-num {
@@ -317,9 +342,18 @@ h1 {
 
 /* Footer */
 .app-footer {
-  padding: 14px 22px; border-top: 1px solid var(--border);
+  padding: 16px 28px; border-top: 1px solid var(--border);
   background: var(--card); text-align: center;
-  font-size: 11px; color: var(--faint); letter-spacing: 0.04em;
+  font-size: 11px; color: var(--muted); letter-spacing: 0.04em;
+}
+.footer-jll {
+  display: inline-flex; align-items: center; gap: 6px; margin-bottom: 4px;
+}
+.footer-jll svg { width: 18px; height: 18px; }
+.footer-line { color: var(--faint); font-size: 10px; }
+.footer-conf {
+  font-size: 9px; color: var(--faint); margin-top: 6px;
+  letter-spacing: 0.08em; text-transform: uppercase;
 }
 </style>
 </head>
@@ -327,8 +361,21 @@ h1 {
 
 <div class="app">
   <div class="header-bar">
-    <h1>NBIX Campus Strategy — Decision Architecture</h1>
-    <div class="byline">Working Document · <b>Chad Urie &amp; Grant Schoneman</b> · April 22, 2026</div>
+    <div class="jll-logo">
+      <svg class="jll-logo-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="25" cy="25" r="23" fill="#DE0614"/>
+        <text x="25" y="32" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" letter-spacing="0.5">JLL</text>
+      </svg>
+      <div>
+        <div class="jll-logo-text">JLL</div>
+        <div class="header-sub">Life Sciences</div>
+      </div>
+    </div>
+    <div class="header-center">
+      <h1>NBIX Campus Strategy — Decision Architecture</h1>
+      <div class="byline">Working Document · <b>Chad Urie &amp; Grant Schoneman</b> · April 2026</div>
+    </div>
+    <div class="header-right"></div>
   </div>
 
   <div class="main-split">
@@ -813,7 +860,15 @@ h1 {
   </div>
 
   <div class="app-footer">
-    Prepared by JLL Life Sciences West Coast · Urie · Schoneman · Leggett · Luedtke
+    <div class="footer-jll">
+      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="25" cy="25" r="23" fill="#DE0614"/>
+        <text x="25" y="32" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" letter-spacing="0.5">JLL</text>
+      </svg>
+      <span style="font-weight:600;color:var(--title);">JLL Life Sciences</span>
+    </div>
+    <div class="footer-line">Urie · Schoneman · Leggett · Luedtke &nbsp;|&nbsp; West Coast Practice Group</div>
+    <div class="footer-conf">Confidential — Prepared for Neurocrine Biosciences Internal Use</div>
   </div>
 </div>
 
