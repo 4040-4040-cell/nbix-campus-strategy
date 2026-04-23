@@ -86,6 +86,15 @@ body{font-family:'Calibri','Segoe UI',system-ui,-apple-system,sans-serif;font-si
 .fork-lease{border-color:var(--navy)}.fork-lease h4{color:var(--navy)}
 .fork-wait{border-color:var(--gold);background:#FFFBF0}.fork-wait h4{color:var(--gold)}
 
+/* ═══ FORK CONNECTOR ═══ */
+.fork-connector{display:flex;justify-content:center;align-items:center;margin:-10px 0;position:relative;height:40px}
+.fork-connector::before{content:'';position:absolute;top:0;left:50%;width:2px;height:12px;background:var(--border)}
+.fork-connector::after{content:'';position:absolute;bottom:0;left:25%;right:25%;height:2px;background:var(--border)}
+.fork-connector .fc-dot{width:10px;height:10px;border-radius:50%;background:var(--navy);position:relative;z-index:1}
+.fork-connector .fc-left,.fork-connector .fc-right{position:absolute;bottom:0;width:2px;height:12px;background:var(--border)}
+.fork-connector .fc-left{left:25%}
+.fork-connector .fc-right{right:25%}
+
 /* ═══ BADGES ═══ */
 .badge{display:inline-block;padding:3px 10px;border-radius:var(--radius);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px}
 .badge-teal{background:var(--teal);color:#fff}.badge-orange{background:var(--orange);color:#fff}.badge-red{background:var(--red);color:#fff}.badge-gold{background:var(--gold);color:#fff}.badge-navy{background:var(--navy);color:#fff}.badge-open{background:#FFF3CD;color:#856404;border:1px solid #FFEEBA}.badge-dom{background:var(--teal);color:#fff}
@@ -179,12 +188,14 @@ tr:nth-child(even){background:var(--bg-alt)}
 @media print{
   .nav,.hamburger,.overlay,.conf-bar{display:none!important}
   .main{margin-left:0!important}
-  .s,.hero{break-inside:avoid;page-break-inside:avoid}
-  .hero{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .s{break-before:page;page-break-before:always;padding:20px 0;border-bottom:1px solid #ccc}
+  .s:first-of-type{break-before:auto;page-break-before:auto}
+  .hero{break-inside:avoid;page-break-inside:avoid;background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body{font-size:11px;line-height:1.4}
-  .s{padding:20px 0;border-bottom:1px solid #ccc}
   @page{margin:1.5cm}
+  @page{@top-center{content:'CONFIDENTIAL — PREPARED FOR NEUROCRINE BIOSCIENCES INTERNAL USE';font-size:8px;color:#C0392B;letter-spacing:1px}}
   .acc-b{max-height:none!important;padding:0 18px 14px!important}
+  .fork-connector{display:none}
 }
 </style>
 </head>
@@ -269,6 +280,8 @@ tr:nth-child(even){background:var(--bg-alt)}
       <p>$15B+ market cap biopharma company whose board is focused on drug approvals, pipeline expansion, and Soleno integration. Asking a pharma board to approve a $500M+ real estate acquisition in the same year as a $2.9B pharma acquisition is a significant ask. The board's question: why now, and not after the 2027 readouts?</p>
     </div>
   </div>
+
+  <div class="fork-connector"><div class="fc-left"></div><div class="fc-dot"></div><div class="fc-right"></div></div>
 
   <div class="fork">
     <div class="fork-p fork-buy">
