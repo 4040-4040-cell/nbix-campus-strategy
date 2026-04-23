@@ -111,6 +111,7 @@ h1 {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .pill:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+.pill.active-pill { outline: 2.5px solid var(--title); outline-offset: 2px; transform: translateY(-2px); }
 .pill .when { font-size: 11px; font-weight: 700; margin-bottom: 2px; }
 .pill .what { font-size: 9.5px; font-weight: 500; opacity: 0.92; line-height: 1.2; }
 .pill.red { background: var(--red); }
@@ -383,12 +384,12 @@ h1 {
     <div class="tree-pane">
       <!-- Timeline -->
       <div class="timeline">
-        <div class="pill red" onclick="showPanel('gate-b5')"><div class="when">MAY 1</div><div class="what">B5 Termination</div></div>
-        <div class="pill orange" onclick="showPanel('gate-dens')"><div class="when">MID MAY</div><div class="what">Densification</div></div>
-        <div class="pill amber" onclick="showPanel('gate-inv')"><div class="when">END MAY</div><div class="what">Invesco Path</div></div>
-        <div class="pill blue" onclick="showPanel('gate-403')"><div class="when">JUN 30</div><div class="what">§40.3.2 Deadline</div></div>
-        <div class="pill green" onclick="showPanel('gate-own')"><div class="when">Q3–Q4</div><div class="what">Ownership</div></div>
-        <div class="pill navy" onclick="showPanel('gate-campus')"><div class="when">2028</div><div class="what">Campus Control</div></div>
+        <div class="pill red" data-links-to="d1" onclick="showFromTimeline('d1')"><div class="when">MAY 1</div><div class="what">B5 Termination</div></div>
+        <div class="pill orange" data-links-to="d2" onclick="showFromTimeline('d2')"><div class="when">MID MAY</div><div class="what">Densification</div></div>
+        <div class="pill amber" data-links-to="d3" onclick="showFromTimeline('d3')"><div class="when">END MAY</div><div class="what">Invesco Path</div></div>
+        <div class="pill blue" data-links-to="d1" onclick="showFromTimeline('d1','gate-403')"><div class="when">JUN 30</div><div class="what">§40.3.2 Deadline</div></div>
+        <div class="pill green" data-links-to="d3" onclick="showFromTimeline('d3','gate-own')"><div class="when">Q3–Q4</div><div class="what">Ownership</div></div>
+        <div class="pill navy" data-links-to="d5" onclick="showFromTimeline('d5','gate-campus')"><div class="when">2028</div><div class="what">Campus Control</div></div>
       </div>
 
       <!-- Decision 1 -->
@@ -893,7 +894,32 @@ function showPanel(id) {
   // Update active states on tree nodes
   document.querySelectorAll('.tree-node, .squeeze-mini, .soleno-bar').forEach(n => n.classList.remove('active'));
   const activeNode = document.querySelector('[data-panel="' + id + '"]');
-  if (activeNode) activeNode.classList.add('active');
+  if (activeNode) {
+    activeNode.classList.add('active');
+    // Scroll the tree node into view in the left pane
+    activeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Update active pill
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active-pill'));
+}
+
+function showFromTimeline(decisionId, gateId) {
+  // Show the decision panel (the full strategic data, not the thin gate summary)
+  showPanel(decisionId);
+
+  // Highlight the pill that was clicked
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active-pill'));
+  const clickedPill = event.currentTarget;
+  clickedPill.classList.add('active-pill');
+
+  // Also highlight the corresponding tree node
+  document.querySelectorAll('.tree-node, .squeeze-mini, .soleno-bar').forEach(n => n.classList.remove('active'));
+  const treeNode = document.querySelector('[data-panel="' + decisionId + '"]');
+  if (treeNode) {
+    treeNode.classList.add('active');
+    treeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 </script>
 </body>
