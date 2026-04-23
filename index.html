@@ -3,924 +3,701 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NBIX Campus Strategy — Decision Architecture</title>
+<title>Neurocrine Biosciences — Campus Strategy Decision Framework</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════
+   NBIX DECISION TREE v7 — DIAGRAM-FIRST DESIGN
+   ═══════════════════════════════════════════════ */
+
 :root {
-  --bg: #F7F5F0;
-  --bg-alt: #EFEBE1;
-  --card: #FFFFFF;
-  --border: #E5E0D4;
-  --border-soft: #EEE9DD;
-  --title: #060000;
-  --text: #1A1A1A;
-  --muted: #5C5C5C;
-  --faint: #8C8C8C;
   --jll-red: #DE0614;
-  --green: #2D7A50;
-  --green-dk: #1B5E3A;
-  --green-bg: #EAF3ED;
-  --red: #DE0614;
-  --red-dk: #B00510;
-  --red-bg: #FDE8E9;
-  --orange: #D47230;
-  --orange-dk: #B85A1C;
-  --orange-bg: #FAE9D8;
-  --amber: #B87D28;
-  --amber-bg: #F5E8CF;
-  --blue: #3670A8;
-  --blue-bg: #E1ECF5;
-  --navy: #1A2F4B;
-  --purple: #6E4080;
-  --purple-bg: #ECE1F0;
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --red-border: #fecaca;
+  --blue: #2563eb;
+  --blue-bg: #eff6ff;
+  --blue-border: #bfdbfe;
+  --purple: #7c3aed;
+  --purple-bg: #f5f3ff;
+  --purple-border: #ddd6fe;
+  --bg: #FAFAF8;
+  --card: #FFFFFF;
+  --border: #E5E7EB;
+  --border-soft: #F3F4F6;
+  --title: #111827;
+  --text: #374151;
+  --muted: #6B7280;
+  --faint: #9CA3AF;
+  --light: #F9FAFB;
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 body {
   background: var(--bg); color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 15px; line-height: 1.55; min-height: 100vh;
-  overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px; line-height: 1.6; min-height: 100vh; overflow-x: hidden;
 }
 
-/* ═══ LAYOUT ═══ */
-.app { display: flex; flex-direction: column; min-height: 100vh; }
-.header-bar {
+/* ═══ HEADER ═══ */
+.header {
+  background: var(--card); border-bottom: 1px solid var(--border);
+  padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+.jll-mark { display: flex; align-items: center; gap: 8px; }
+.jll-dot { width: 28px; height: 28px; background: var(--jll-red); border-radius: 50%; flex-shrink: 0; }
+.jll-text { font-size: 18px; font-weight: 800; color: var(--title); letter-spacing: 0.02em; }
+.header-divider { width: 1px; height: 28px; background: var(--border); }
+.header-title { font-family: 'Fraunces', Georgia, serif; font-size: 16px; font-weight: 600; color: var(--title); line-height: 1.2; }
+.header-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
+.header-right { text-align: right; flex-shrink: 0; }
+.header-date { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.header-conf { font-size: 9px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+@media (max-width: 768px) {
+  .header { flex-direction: column; align-items: flex-start; padding: 16px 20px; gap: 12px; }
+  .header-right { text-align: left; }
+  .header-divider { display: none; }
+}
+
+/* ═══ MAIN ═══ */
+.main { max-width: 1280px; margin: 0 auto; padding: 32px 32px 80px; }
+@media (max-width: 768px) { .main { padding: 20px 16px 60px; } }
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--faint); margin-bottom: 16px;
+}
+
+/* ═══ TREE CANVAS ═══ */
+.tree-canvas {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 32px 24px 28px; overflow-x: auto;
+}
+
+/* Timeline axis */
+.timeline-axis {
+  display: flex; align-items: flex-start; position: relative; margin-bottom: 28px; min-width: 700px;
+}
+.timeline-track {
+  position: absolute; top: 7px; left: 40px; right: 40px; height: 3px;
+  background: linear-gradient(90deg, var(--red) 0%, var(--amber) 40%, var(--blue) 70%, var(--green) 100%);
+  border-radius: 2px; z-index: 0;
+}
+.tl-gate {
+  position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; padding: 0 4px; transition: transform 0.2s ease;
+}
+.tl-gate:hover { transform: translateY(-2px); }
+.tl-dot {
+  width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--card);
+  box-shadow: 0 0 0 2px var(--border); margin-bottom: 8px; transition: all 0.2s ease;
+}
+.tl-gate.active .tl-dot { box-shadow: 0 0 0 2px var(--green), 0 0 0 6px rgba(22,163,74,0.15); }
+.tl-dot.urgent { background: var(--red); }
+.tl-dot.soon { background: var(--amber); }
+.tl-dot.mid { background: var(--blue); }
+.tl-dot.later { background: var(--green); }
+.tl-label { font-size: 10px; font-weight: 700; color: var(--title); text-align: center; white-space: nowrap; }
+.tl-sublabel { font-size: 9px; color: var(--muted); text-align: center; white-space: nowrap; margin-top: 1px; }
+
+/* Decision nodes */
+.nodes-row {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: nowrap; min-width: 700px; position: relative; z-index: 1;
+}
+.d-node {
+  flex: 1; min-width: 0; max-width: 220px;
+  background: var(--card); border: 2px solid var(--border); border-radius: 14px;
+  padding: 18px 16px 14px; cursor: pointer; transition: all 0.25s ease;
+  position: relative; text-align: center;
+}
+.d-node:hover { border-color: #D1D5DB; box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-3px); }
+.d-node.active { border-color: var(--green); box-shadow: 0 0 0 3px rgba(22,163,74,0.12), 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-3px); }
+.d-node.active[data-urgency="critical"] { border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,0.12), 0 8px 24px rgba(0,0,0,0.08); }
+.d-node-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 10px; color: #fff; font-weight: 800; font-size: 14px; margin-bottom: 10px;
+}
+.d-node-num.urgent { background: var(--red); }
+.d-node-num.soon { background: var(--amber); }
+.d-node-num.mid { background: var(--blue); }
+.d-node-num.later { background: var(--green); }
+.d-node-title { font-family: 'Fraunces', Georgia, serif; font-size: 15px; font-weight: 700; color: var(--title); line-height: 1.25; margin-bottom: 6px; }
+.d-node-rec { font-size: 11px; color: var(--green); font-weight: 600; line-height: 1.3; }
+.d-node-badge {
+  position: absolute; top: -8px; right: -8px; font-size: 8px; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 100px; color: #fff; white-space: nowrap;
+}
+.d-node-badge.urgent { background: var(--red); }
+.d-node-badge.soon { background: var(--amber); }
+
+/* Cross-cutting row */
+.cross-row { display: flex; gap: 16px; margin-top: 20px; justify-content: center; }
+.cross-node {
+  flex: 0 1 420px; background: var(--card); border: 1.5px dashed; border-radius: 12px;
+  padding: 14px 18px; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; gap: 12px;
+}
+.cross-node:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
+.cross-node.active { box-shadow: 0 0 0 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06); }
+.cross-node.squeeze { border-color: var(--purple); background: var(--purple-bg); }
+.cross-node.squeeze.active { box-shadow: 0 0 0 3px rgba(124,58,237,0.15); }
+.cross-node.soleno { border-color: var(--amber); background: var(--amber-bg); }
+.cross-node.soleno.active { box-shadow: 0 0 0 3px rgba(217,119,6,0.15); }
+.cross-icon { font-size: 22px; flex-shrink: 0; }
+.cross-title { font-family: 'Fraunces', Georgia, serif; font-size: 13px; font-weight: 700; line-height: 1.3; }
+.cross-node.squeeze .cross-title { color: var(--purple); }
+.cross-node.soleno .cross-title { color: var(--amber); }
+.cross-sub { font-size: 11px; color: var(--muted); line-height: 1.3; margin-top: 2px; }
+
+@media (max-width: 768px) {
+  .nodes-row { flex-direction: column; align-items: stretch; gap: 10px; min-width: 0; }
+  .d-node { flex: none; max-width: none; text-align: left; display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+  .d-node-num { margin-bottom: 0; flex-shrink: 0; }
+  .d-node-info { flex: 1; }
+  .cross-row { flex-direction: column; }
+  .cross-node { flex: none; }
+  .timeline-axis { min-width: 0; overflow-x: auto; padding-bottom: 8px; }
+  .tree-canvas { padding: 20px 16px; }
+}
+
+/* ═══ DETAIL SECTION ═══ */
+.detail-section { margin-top: 0; max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), margin-top 0.4s ease; }
+.detail-section.open { max-height: 4000px; margin-top: 24px; }
+.detail-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: none; }
+.detail-panel.visible { display: block; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.detail-summary { padding: 28px 32px 24px; }
+.detail-tag {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 100px; margin-bottom: 12px;
+}
+.detail-tag.rec { background: var(--green); color: #fff; }
+.detail-tag.warn { background: var(--red); color: #fff; }
+.detail-tag.info { background: var(--blue-bg); color: var(--blue); }
+.detail-tag.purple { background: var(--purple-bg); color: var(--purple); }
+.detail-tag.amber { background: var(--amber-bg); color: var(--amber); }
+.detail-h2 {
+  font-family: 'Fraunces', Georgia, serif; font-size: clamp(22px,4vw,28px); font-weight: 800;
+  color: var(--title); line-height: 1.15; letter-spacing: -0.015em; margin-bottom: 8px;
+}
+.detail-lead { font-size: 16px; color: var(--text); line-height: 1.55; max-width: 720px; }
+
+/* Stat cards */
+.stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; margin-top: 20px; }
+.stat-card { background: var(--light); border: 1px solid var(--border-soft); border-radius: 12px; padding: 16px 18px; text-align: center; }
+.stat-val { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; line-height: 1.1; margin-bottom: 4px; }
+.stat-val.g { color: var(--green); }
+.stat-val.r { color: var(--red); }
+.stat-val.a { color: var(--amber); }
+.stat-val.b { color: var(--blue); }
+.stat-val.p { color: var(--purple); }
+.stat-lbl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.stat-ctx { font-size: 11px; color: var(--faint); margin-top: 4px; line-height: 1.3; }
+
+/* Expandable depth sections */
+.detail-depth { border-top: 1px solid var(--border); }
+.depth-toggle {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 28px 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--card);
+  padding: 16px 32px; cursor: pointer; background: var(--light); transition: background 0.2s ease; user-select: none;
 }
-.header-center { text-align: center; flex: 1; }
-.jll-logo {
-  flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
-  text-decoration: none;
-}
-.jll-logo-icon {
-  width: 32px; height: 32px;
-}
-.jll-logo-text {
-  font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800;
-  color: var(--title); letter-spacing: 1.5px;
-}
-.header-sub {
-  font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--muted); font-weight: 500; margin-top: -1px;
-}
-.header-right { flex: 0 0 auto; width: 100px; }
-@media (max-width: 900px) {
-  .header-bar { flex-wrap: wrap; justify-content: center; gap: 8px; padding: 14px 16px 12px; }
-  .header-right { display: none; }
-  .jll-logo { order: -1; }
-  .header-center { flex-basis: 100%; }
-}
-h1 {
-  font-family: 'Fraunces', Georgia, serif; font-weight: 800;
-  font-size: clamp(18px, 4vw, 24px); line-height: 1.15;
-  color: var(--title); letter-spacing: -0.015em; margin-bottom: 4px;
-}
-.byline { font-size: 13px; color: var(--muted); }
-.byline b { color: var(--title); font-weight: 600; }
-
-.main-split {
-  display: flex; flex: 1; min-height: 0;
-}
-@media (max-width: 900px) {
-  .main-split { flex-direction: column; }
+.depth-toggle:hover { background: #F3F4F6; }
+.depth-toggle h3 { font-family: 'Fraunces', Georgia, serif; font-size: 16px; font-weight: 700; color: var(--title); }
+.depth-chevron { width: 20px; height: 20px; color: var(--muted); transition: transform 0.3s ease; flex-shrink: 0; }
+.depth-toggle.open .depth-chevron { transform: rotate(180deg); }
+.depth-body { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1); }
+.depth-body.open { max-height: 2000px; }
+.depth-content { padding: 0 32px 24px; }
+@media (max-width: 768px) {
+  .detail-summary { padding: 20px 18px 18px; }
+  .depth-toggle { padding: 14px 18px; }
+  .depth-content { padding: 0 18px 20px; }
 }
 
-/* ═══ LEFT: TREE DIAGRAM ═══ */
-.tree-pane {
-  flex: 0 0 420px; padding: 24px 20px; overflow-y: auto;
-  border-right: 1px solid var(--border); background: var(--bg);
-}
-@media (max-width: 900px) {
-  .tree-pane { flex: none; border-right: none; border-bottom: 1px solid var(--border); max-height: 50vh; }
-}
+/* ═══ SHARED CONTENT ═══ */
+.content-p { font-size: 14px; line-height: 1.65; color: var(--text); margin-bottom: 12px; max-width: 720px; }
+.ck-list, .xk-list { list-style: none; padding: 0; margin: 8px 0 16px; }
+.ck-list li, .xk-list li { position: relative; padding: 5px 0 5px 26px; font-size: 13.5px; line-height: 1.55; color: var(--text); }
+.ck-list li::before { content: '\2713'; position: absolute; left: 0; top: 5px; font-weight: 800; font-size: 14px; color: var(--green); }
+.xk-list li::before { content: '\2715'; position: absolute; left: 2px; top: 5px; font-weight: 800; font-size: 12px; color: var(--red); }
 
-/* Timeline pills */
-.timeline {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
-  margin-bottom: 20px;
-}
-.pill {
-  border-radius: 10px; padding: 10px 6px; text-align: center; color: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.pill:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
-.pill.active-pill { outline: 2.5px solid var(--title); outline-offset: 2px; transform: translateY(-2px); }
-.pill .when { font-size: 11px; font-weight: 700; margin-bottom: 2px; }
-.pill .what { font-size: 9.5px; font-weight: 500; opacity: 0.92; line-height: 1.2; }
-.pill.red { background: var(--red); }
-.pill.orange { background: var(--orange); }
-.pill.amber { background: var(--amber); }
-.pill.blue { background: var(--blue); }
-.pill.green { background: var(--green); }
-.pill.navy { background: var(--navy); }
+.opt-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 12px; }
+.opt-card.rec { border: 2px solid var(--green); background: var(--green-bg); }
+.opt-card.warn { border-left: 4px solid var(--red); }
+.opt-title { font-family: 'Fraunces', Georgia, serif; font-size: 15px; font-weight: 700; color: var(--title); margin-bottom: 6px; line-height: 1.3; }
+.opt-card.rec .opt-title { color: #15803d; }
+.opt-card p { font-size: 13.5px; line-height: 1.55; color: var(--text); margin-bottom: 8px; }
 
-/* Tree nodes */
-.tree-section {
-  margin-bottom: 6px;
-}
-.tree-label {
-  font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--muted); margin: 14px 0 6px 2px;
-}
-
-.tree-node {
-  position: relative;
-  background: var(--card); border: 1.5px solid var(--border);
-  border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
-  cursor: pointer; transition: all 0.2s ease;
-  display: flex; align-items: center; gap: 10px;
-}
-.tree-node:hover { border-color: #C7C1AE; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.tree-node.active {
-  border-color: var(--jll-red); box-shadow: 0 0 0 3px rgba(222,6,20,0.12);
-}
-.tree-node.active[data-urgency="critical"] {
-  border-color: var(--jll-red); box-shadow: 0 0 0 3px rgba(222,6,20,0.15);
-}
-
-.node-num {
-  flex: 0 0 30px; height: 30px; border-radius: 8px;
-  color: #fff; font-weight: 700; font-size: 14px;
-  display: flex; align-items: center; justify-content: center;
-}
-.node-num.red { background: var(--red); }
-.node-num.orange { background: var(--orange); }
-.node-num.blue { background: var(--blue); }
-.node-num.navy { background: var(--navy); }
-.node-num.green { background: var(--green); }
-.node-num.purple { background: var(--purple); }
-
-.node-text { flex: 1; min-width: 0; }
-.node-title {
-  font-family: 'Fraunces', Georgia, serif; font-size: 14.5px; font-weight: 700;
-  color: var(--title); line-height: 1.25; margin-bottom: 2px;
-}
-.node-sub { font-size: 11px; color: var(--muted); line-height: 1.35; }
-.node-badge {
-  font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em;
-  padding: 2px 7px; border-radius: 100px; color: #fff; white-space: nowrap;
-}
-.node-badge.urgent { background: var(--red); }
-.node-badge.soon { background: var(--orange); }
-.node-badge.mid { background: var(--blue); }
-.node-badge.later { background: var(--navy); }
-
-/* Connector lines */
-.connector {
-  width: 2px; height: 12px; background: var(--border);
-  margin: 0 auto; position: relative;
-}
-.connector.branch {
-  height: 8px;
-  background: linear-gradient(180deg, var(--border), var(--green));
-}
-
-/* Squeeze callout in tree */
-.squeeze-mini {
-  background: linear-gradient(135deg, #EEE3F2 0%, #E5D4EC 100%);
-  border: 1.5px solid var(--purple); border-radius: 10px;
-  padding: 10px 12px; margin: 4px 0 8px; cursor: pointer;
-  transition: all 0.2s ease;
-}
-.squeeze-mini:hover { box-shadow: 0 2px 8px rgba(125,74,143,0.15); }
-.squeeze-mini.active { box-shadow: 0 0 0 3px rgba(125,74,143,0.2); }
-.squeeze-mini h4 {
-  font-family: 'Fraunces', serif; font-size: 12px; font-weight: 700;
-  color: var(--purple); line-height: 1.3;
-}
-
-/* Soleno horizontal */
-.soleno-bar {
-  background: var(--amber-bg); border: 1px solid var(--amber);
-  border-radius: 10px; padding: 10px 12px; margin-top: 12px;
-  cursor: pointer; transition: all 0.2s ease;
-}
-.soleno-bar:hover { box-shadow: 0 2px 8px rgba(200,138,46,0.15); }
-.soleno-bar.active { box-shadow: 0 0 0 3px rgba(200,138,46,0.2); }
-.soleno-bar h4 {
-  font-family: 'Fraunces', serif; font-size: 12px; font-weight: 700;
-  color: var(--amber); line-height: 1.3;
-}
-
-/* ═══ RIGHT: DATA PANEL ═══ */
-.data-pane {
-  flex: 1; padding: 28px 28px 60px; overflow-y: auto;
-  background: var(--card); min-height: 0;
-}
-@media (max-width: 900px) {
-  .data-pane { padding: 20px 18px 60px; }
-}
-
-.panel-empty {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  height: 100%; min-height: 300px; text-align: center; color: var(--faint);
-}
-.panel-empty .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
-.panel-empty p { font-size: 14px; max-width: 280px; line-height: 1.5; }
-
-/* Panel content styles */
-.panel { display: none; }
-.panel.visible { display: block; animation: fadeIn 0.25s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-.panel-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-.panel-tag {
-  display: inline-block; font-size: 10px; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 3px 10px; border-radius: 100px; margin-bottom: 10px;
-}
-.panel-tag.rec { background: var(--green); color: #fff; }
-.panel-tag.warn { background: var(--red); color: #fff; }
-.panel-tag.info { background: var(--blue-bg); color: var(--blue); }
-.panel-tag.purple { background: var(--purple-bg); color: var(--purple); }
-.panel-tag.amber { background: var(--amber-bg); color: var(--amber); }
-
-.panel h2 {
-  font-family: 'Fraunces', Georgia, serif; font-size: 22px; font-weight: 800;
-  color: var(--title); line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 6px;
-}
-.panel h3 {
-  font-family: 'Fraunces', Georgia, serif; font-size: 17px; font-weight: 700;
-  color: var(--title); line-height: 1.25; margin: 20px 0 10px;
-}
-.panel h4 {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted); margin: 18px 0 8px;
-}
-.panel p { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 12px; }
-.panel .lead { font-size: 15px; color: var(--title); font-weight: 500; }
-
-/* Options within panel */
-.opt-card {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
-  padding: 16px 18px; margin-bottom: 12px;
-}
-.opt-card.rec { border: 1.5px solid var(--green); background: var(--green-bg); }
-.opt-card.warn { border-left: 3px solid var(--red); }
-
-.opt-card .opt-title {
-  font-family: 'Fraunces', serif; font-size: 16px; font-weight: 700;
-  color: var(--title); margin-bottom: 6px; line-height: 1.3;
-}
-.opt-card.rec .opt-title { color: var(--green-dk); }
-.opt-card.warn .opt-title { color: var(--red-dk); }
-
-.opt-card p { font-size: 13.5px; margin-bottom: 8px; }
-
-/* Checklists */
-.check-list, .x-list { list-style: none; padding: 0; margin: 8px 0; }
-.check-list li, .x-list li {
-  position: relative; padding: 5px 0 5px 24px;
-  font-size: 13px; line-height: 1.5; color: var(--text);
-}
-.check-list li::before {
-  content: ''; position: absolute; left: 0; top: 8px;
-  width: 14px; height: 14px; background-color: var(--green);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / contain;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / contain;
-}
-.x-list li::before {
-  content: ''; position: absolute; left: 2px; top: 8px;
-  width: 12px; height: 12px; background-color: var(--red);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E") no-repeat center / contain;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E") no-repeat center / contain;
-}
-.check-list li b { font-weight: 600; color: var(--green-dk); }
-.x-list li b { font-weight: 600; color: var(--red-dk); }
-
-/* Concern callouts */
-.concern-box {
-  background: var(--orange-bg); border-left: 4px solid var(--orange);
-  border-radius: 8px; padding: 14px 16px; margin: 14px 0;
-}
-.concern-box h5 {
-  font-size: 10px; font-weight: 800; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--orange-dk); margin-bottom: 10px;
-}
-.concern-item {
-  font-size: 13px; line-height: 1.5; margin-bottom: 10px;
-  padding-bottom: 10px; border-bottom: 1px dashed rgba(227,122,60,0.3);
-}
+.concern-box { background: var(--red-bg); border: 1px solid var(--red-border); border-radius: 12px; padding: 18px 20px; margin: 16px 0; }
+.concern-box h5 { font-size: 12px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+.concern-item { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--red-border); }
 .concern-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-.concern-q { font-weight: 600; color: var(--orange-dk); display: block; margin-bottom: 3px; }
+.concern-q { display: block; font-size: 13px; font-weight: 600; color: var(--title); margin-bottom: 4px; font-style: italic; }
+.concern-a { font-size: 13px; line-height: 1.55; color: var(--text); }
 
-/* Stats row */
-.stats-row {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
-}
-@media (max-width: 600px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
-.stat-val {
-  font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700;
-  color: var(--title); line-height: 1.1;
-}
-.stat-val.g { color: var(--green-dk); }
-.stat-val.r { color: var(--red-dk); }
-.stat-lbl {
-  font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--muted); margin-top: 2px;
-}
+.obj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 12px; margin: 12px 0; }
+.obj-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.obj-q { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 6px; line-height: 1.3; }
+.obj-a { font-size: 12.5px; line-height: 1.5; color: var(--text); }
 
-/* Objection grid */
-.obj-grid { margin-top: 12px; }
-.obj-item {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
-}
-.obj-q {
-  font-family: 'Fraunces', serif; font-weight: 700; font-size: 13px;
-  color: var(--red-dk); margin-bottom: 4px;
-}
-.obj-a { font-size: 13px; line-height: 1.5; color: var(--text); }
-.obj-a b { color: var(--green-dk); font-weight: 600; }
-
-/* Footer */
-.app-footer {
-  padding: 16px 28px; border-top: 1px solid var(--border);
-  background: var(--card); text-align: center;
-  font-size: 11px; color: var(--muted); letter-spacing: 0.04em;
-}
-.footer-jll {
-  display: inline-flex; align-items: center; gap: 6px; margin-bottom: 4px;
-}
-.footer-jll svg { width: 18px; height: 18px; }
-.footer-line { color: var(--faint); font-size: 10px; }
-.footer-conf {
-  font-size: 9px; color: var(--faint); margin-top: 6px;
-  letter-spacing: 0.08em; text-transform: uppercase;
-}
+/* ═══ FOOTER ═══ */
+.footer { text-align: center; padding: 24px 20px; border-top: 1px solid var(--border); background: var(--card); }
+.footer-team { font-size: 12px; color: var(--muted); font-weight: 500; }
+.footer-conf { font-size: 9px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
 </style>
 </head>
 <body>
 
-<div class="app">
-  <div class="header-bar">
-    <div class="jll-logo">
-      <svg class="jll-logo-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="25" cy="25" r="23" fill="#DE0614"/>
-        <text x="25" y="32" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" letter-spacing="0.5">JLL</text>
-      </svg>
-      <div>
-        <div class="jll-logo-text">JLL</div>
-        <div class="header-sub">Life Sciences</div>
-      </div>
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="header-left">
+    <div class="jll-mark"><div class="jll-dot"></div><span class="jll-text">JLL</span></div>
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">Neurocrine Biosciences — Campus Strategy</div>
+      <div class="header-sub">Decision Architecture · Aperture Del Mar</div>
     </div>
-    <div class="header-center">
-      <h1>NBIX Campus Strategy — Decision Architecture</h1>
-      <div class="byline">Working Document · <b>Chad Urie &amp; Grant Schoneman</b> · April 2026</div>
-    </div>
-    <div class="header-right"></div>
   </div>
+  <div class="header-right">
+    <div class="header-date">April 2026</div>
+    <div class="header-conf">Confidential</div>
+  </div>
+</header>
 
-  <div class="main-split">
-    <!-- ═══ LEFT: TREE ═══ -->
-    <div class="tree-pane">
-      <!-- Timeline -->
-      <div class="timeline">
-        <div class="pill red" data-links-to="d1" onclick="showFromTimeline('d1')"><div class="when">MAY 1</div><div class="what">B5 Termination</div></div>
-        <div class="pill orange" data-links-to="d2" onclick="showFromTimeline('d2')"><div class="when">MID MAY</div><div class="what">Densification</div></div>
-        <div class="pill amber" data-links-to="d3" onclick="showFromTimeline('d3')"><div class="when">END MAY</div><div class="what">Invesco Path</div></div>
-        <div class="pill blue" data-links-to="d1" onclick="showFromTimeline('d1','gate-403')"><div class="when">JUN 30</div><div class="what">§40.3.2 Deadline</div></div>
-        <div class="pill green" data-links-to="d3" onclick="showFromTimeline('d3','gate-own')"><div class="when">Q3–Q4</div><div class="what">Ownership</div></div>
-        <div class="pill navy" data-links-to="d5" onclick="showFromTimeline('d5','gate-campus')"><div class="when">2028</div><div class="what">Campus Control</div></div>
-      </div>
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <div class="tree-section">
+    <div class="section-label">Decision Timeline</div>
+    <div class="tree-canvas">
 
-      <!-- Decision 1 -->
-      <div class="tree-section">
-        <div class="tree-label">Decision 1 · Immediate Action · 9 Days</div>
-        <div class="tree-node" data-urgency="critical" data-panel="d1" onclick="showPanel('d1')">
-          <div class="node-num red">1</div>
-          <div class="node-text">
-            <div class="node-title">Terminate Building 5?</div>
-            <div class="node-sub">§40.3.2 sole discretion · Target May 1</div>
-          </div>
-          <span class="node-badge urgent">9 DAYS</span>
+      <!-- Timeline axis -->
+      <div class="timeline-axis" id="timeline">
+        <div class="timeline-track"></div>
+        <div class="tl-gate" onclick="activateNode('d1')" data-node="d1">
+          <div class="tl-dot urgent"></div>
+          <div class="tl-label">MAY 1</div>
+          <div class="tl-sublabel">B5 Notice</div>
+        </div>
+        <div class="tl-gate" onclick="activateNode('d2')" data-node="d2">
+          <div class="tl-dot urgent"></div>
+          <div class="tl-label">MID-MAY</div>
+          <div class="tl-sublabel">Densification</div>
+        </div>
+        <div class="tl-gate" onclick="activateNode('d3')" data-node="d3">
+          <div class="tl-dot soon"></div>
+          <div class="tl-label">END MAY</div>
+          <div class="tl-sublabel">Invesco Path</div>
+        </div>
+        <div class="tl-gate" onclick="activateNode('d4')" data-node="d4">
+          <div class="tl-dot mid"></div>
+          <div class="tl-label">Q2–Q3</div>
+          <div class="tl-sublabel">Partner</div>
+        </div>
+        <div class="tl-gate" onclick="activateNode('d5')" data-node="d5">
+          <div class="tl-dot later"></div>
+          <div class="tl-label">2028</div>
+          <div class="tl-sublabel">Campus Control</div>
         </div>
       </div>
 
-      <div class="connector branch"></div>
-
-      <!-- Valuation Squeeze -->
-      <div class="squeeze-mini" data-panel="squeeze" onclick="showPanel('squeeze')">
-        <h4>The Valuation Squeeze — Why D1 + D2 Work Together</h4>
-      </div>
-
-      <div class="connector"></div>
-
-      <!-- Decision 2 -->
-      <div class="tree-section">
-        <div class="tree-label">Decision 2 · Capacity · §10 Reasonableness</div>
-        <div class="tree-node" data-urgency="critical" data-panel="d2" onclick="showPanel('d2')">
-          <div class="node-num orange">2</div>
-          <div class="node-text">
-            <div class="node-title">Secure Densification Approval?</div>
-            <div class="node-sub">NBIX-led internal · Sequential after B5</div>
-          </div>
-          <span class="node-badge urgent">MID-MAY</span>
-        </div>
-      </div>
-
-      <div class="connector"></div>
-
-      <!-- Decision 3 -->
-      <div class="tree-section">
-        <div class="tree-label">Decision 3 · Ownership Path · Kurt Tomorrow</div>
-        <div class="tree-node" data-urgency="critical" data-panel="d3" onclick="showPanel('d3')">
-          <div class="node-num red">3</div>
-          <div class="node-text">
-            <div class="node-title">How Does NBIX Reach Ownership?</div>
-            <div class="node-sub">Creditor-driven vs. negotiated vs. long game</div>
-          </div>
-          <span class="node-badge urgent">LIVE</span>
-        </div>
-      </div>
-
-      <div class="connector"></div>
-
-      <!-- Decision 4 -->
-      <div class="tree-section">
-        <div class="tree-label">Decision 4 · Partner Selection · Q2</div>
-        <div class="tree-node" data-panel="d4" onclick="showPanel('d4')">
-          <div class="node-num blue">4</div>
-          <div class="node-text">
-            <div class="node-title">Which Partner Carries Acquisition?</div>
-            <div class="node-sub">Breakthrough primary · BioMed · Healthpeak · ARE</div>
-          </div>
-          <span class="node-badge mid">Q2</span>
-        </div>
-      </div>
-
-      <div class="connector"></div>
-
-      <!-- Decision 5 -->
-      <div class="tree-section">
-        <div class="tree-label">Decision 5 · Expansion · Post-Phase 3</div>
-        <div class="tree-node" data-panel="d5" onclick="showPanel('d5')">
-          <div class="node-num navy">5</div>
-          <div class="node-text">
-            <div class="node-title">Which Growth Scenario Lands 2028–2032?</div>
-            <div class="node-sub">Buy + Densify + Kilroy CDS recommended</div>
-          </div>
-          <span class="node-badge later">2028</span>
-        </div>
-      </div>
-
-      <!-- Soleno -->
-      <div class="soleno-bar" data-panel="soleno" onclick="showPanel('soleno')">
-        <h4>Soleno $2.9B — Horizontal Impact Across All Decisions</h4>
-      </div>
-    </div>
-
-    <!-- ═══ RIGHT: DATA PANEL ═══ -->
-    <div class="data-pane">
-      <!-- Empty state -->
-      <div class="panel-empty" id="empty-state">
-        <div class="icon">&#x2190;</div>
-        <p>Select any decision node or timeline gate to pull the full strategic data.</p>
-      </div>
-
-      <!-- ═══ DECISION 1 PANEL ═══ -->
-      <div class="panel" id="panel-d1">
-        <div class="panel-header">
-          <span class="panel-tag rec">RECOMMENDED · SEND FIRST</span>
-          <h2>Terminate the Building 5 Expansion Option</h2>
-          <p class="lead">Exercise §40.3.2 sole-discretion termination right. Send notice by May 1, ahead of densification submittal. ROFR, ROFO, and renewals remain intact.</p>
-        </div>
-
-        <p>Tenant exercises sole discretion under §40.3.2 to terminate the Expansion Option. Saves ~$297K (2 months ground rent at $148.5K/mo). Holdback expires earlier of 12 months after notice or June 30, 2027. <b>Sequence matters</b> — firing this first removes Gemdale's commercial motive to obstruct the densification submittal that follows two weeks later.</p>
-
-        <h4>Why This Is the Right Move</h4>
-        <ul class="check-list">
-          <li><b>Eliminates $68–73M NPV auto-extension liability</b> — exercising B5 would extend all existing phases by 41–44 months (§40.2.4)</li>
-          <li>Stops non-creditable ground rent ($1.78M/yr flowing to Gemdale with zero offset)</li>
-          <li><b>Removes Gemdale's incentive to block densification</b> — with no B5 path to funnel NBIX toward, obstruction becomes landlord harassment with §10 breach exposure</li>
-          <li>Depresses campus valuation by stripping the growth premium — reinforces partner basis math in Decision 3</li>
-          <li>Weakens Gemdale's NOI narrative to OZK ($1.78M/yr gone) — accelerates creditor-driven resolution</li>
-          <li>Under post-acquisition ownership, NBIX retains full ability to build on Lot 5 at its own timing and cost basis</li>
-        </ul>
-
-        <div class="concern-box">
-          <h5>Downside Concerns — Every One Addressed</h5>
-          <div class="concern-item">
-            <span class="concern-q">"Do we lose the right to expand onto Lot 5 forever?"</span>
-            No. Termination only ends Gemdale's landlord-build mechanism. Post-acquisition, NBIX retains full entitlement to build on Lot 5 at NBIX's cost basis and timing — materially better economics than a Gemdale build-to-suit.
-          </div>
-          <div class="concern-item">
-            <span class="concern-q">"What if densification doesn't give us enough capacity?"</span>
-            Decision 5 scenarios handle residual gap on better economics than B5 would deliver. Densification buys 3–5 years of runway while ownership resolves and Phase 3 data reads out.
-          </div>
-          <div class="concern-item">
-            <span class="concern-q">"Does this weaken Gemdale's posture with King Street?"</span>
-            Yes — intentionally. Weakening Gemdale's NOI and valuation story is the point. Decision 3 Branch B depends on it.
+      <!-- Decision nodes -->
+      <div class="nodes-row" id="nodesRow">
+        <div class="d-node" id="node-d1" data-urgency="critical" onclick="activateNode('d1')">
+          <div class="d-node-badge urgent">9 DAYS</div>
+          <div class="d-node-num urgent">1</div>
+          <div class="d-node-info">
+            <div class="d-node-title">B5 Termination</div>
+            <div class="d-node-rec">Eliminate $68–73M liability</div>
           </div>
         </div>
-
-        <div class="stats-row">
-          <div><div class="stat-val g">$68–73M</div><div class="stat-lbl">NPV Liability Killed</div></div>
-          <div><div class="stat-val g">$1.78M/yr</div><div class="stat-lbl">Ground Rent Stopped</div></div>
-          <div><div class="stat-val g">9 days</div><div class="stat-lbl">To May 1 Target</div></div>
-          <div><div class="stat-val g">12 mo</div><div class="stat-lbl">Holdback Runoff</div></div>
+        <div class="d-node" id="node-d2" data-urgency="critical" onclick="activateNode('d2')">
+          <div class="d-node-badge urgent">SEQUENTIAL</div>
+          <div class="d-node-num urgent">2</div>
+          <div class="d-node-info">
+            <div class="d-node-title">Densification</div>
+            <div class="d-node-rec">NBIX-Led · §10 Submittal</div>
+          </div>
         </div>
-
-        <h3>Not Recommended: Exercise the Expansion Option</h3>
-        <div class="opt-card warn">
-          <div class="opt-title">Commit to Build B5</div>
-          <ul class="x-list">
-            <li><b>Triggers §40.2.4 auto-extension</b> — $68–73M NPV liability materializes</li>
-            <li>Commits $100M+ capex at Gemdale's cost basis + margin ahead of Phase 3 readouts</li>
-            <li>Strengthens Gemdale's NOI and refi case with OZK — directly works against ownership thesis</li>
-          </ul>
+        <div class="d-node" id="node-d3" onclick="activateNode('d3')">
+          <div class="d-node-badge soon">KURT MTG</div>
+          <div class="d-node-num soon">3</div>
+          <div class="d-node-info">
+            <div class="d-node-title">Ownership Path</div>
+            <div class="d-node-rec">Creditor-Driven Extinguishment</div>
+          </div>
         </div>
-
-        <h3>Not Recommended: Do Nothing</h3>
-        <div class="opt-card warn">
-          <div class="opt-title">Let June 30 Deadline Pass</div>
-          <ul class="x-list">
-            <li><b>Keeps the $68–73M auto-extension liability alive</b> for another 20 months</li>
-            <li><b>Gives Gemdale a pretext to obstruct densification</b> — "you still have B5 as a growth path"</li>
-            <li>Keeps $1.78M/yr non-creditable ground rent flowing to Gemdale</li>
-          </ul>
+        <div class="d-node" id="node-d4" onclick="activateNode('d4')">
+          <div class="d-node-num mid">4</div>
+          <div class="d-node-info">
+            <div class="d-node-title">Partner Selection</div>
+            <div class="d-node-rec">Breakthrough Properties</div>
+          </div>
+        </div>
+        <div class="d-node" id="node-d5" onclick="activateNode('d5')">
+          <div class="d-node-num later">5</div>
+          <div class="d-node-info">
+            <div class="d-node-title">Expansion Scenario</div>
+            <div class="d-node-rec">Buy + Densify + Kilroy CDS</div>
+          </div>
         </div>
       </div>
 
-      <!-- ═══ VALUATION SQUEEZE PANEL ═══ -->
-      <div class="panel" id="panel-squeeze">
-        <div class="panel-header">
-          <span class="panel-tag purple">STRATEGIC THESIS</span>
-          <h2>The Valuation Squeeze</h2>
-          <p class="lead">Decisions 1 and 2 are not independent. Together, they depress Gemdale's campus valuation toward the partner basis target in Decision 3 — and away from the $600M+ Gemdale has been telling OZK.</p>
-        </div>
-
-        <p>Two moves, one outcome. B5 termination strips the growth premium out of the campus story. Densification confirms NBIX solves growth internally, locking in a "stabilized NNN only" narrative that caps the cap rate.</p>
-
-        <div class="stats-row" style="grid-template-columns: repeat(3,1fr);">
+      <!-- Cross-cutting -->
+      <div class="cross-row">
+        <div class="cross-node squeeze" id="node-squeeze" onclick="activateNode('squeeze')">
+          <div class="cross-icon">&#x25BC;</div>
           <div>
-            <div class="stat-val r">–$40–60M</div>
-            <div class="stat-lbl">B5 Termination Strips</div>
-            <p style="font-size:12px;color:var(--muted);margin-top:4px;">Growth premium removed — no more "150K SF ready to build"</p>
+            <div class="cross-title">Valuation Squeeze Thesis</div>
+            <div class="cross-sub">D1 + D2 depress campus value → $540–575M partner basis</div>
           </div>
+        </div>
+        <div class="cross-node soleno" id="node-soleno" onclick="activateNode('soleno')">
+          <div class="cross-icon">&#x2194;</div>
           <div>
-            <div class="stat-val" style="color:var(--orange-dk);">Caps Rate</div>
-            <div class="stat-lbl">Densification Confirms</div>
-            <p style="font-size:12px;color:var(--muted);margin-top:4px;">NBIX solves growth internally — stabilized NNN only narrative</p>
-          </div>
-          <div>
-            <div class="stat-val g">~$540–575M</div>
-            <div class="stat-lbl">Partner Basis Target</div>
-            <p style="font-size:12px;color:var(--muted);margin-top:4px;">Gemdale value pushed toward partner basis range</p>
+            <div class="cross-title">Soleno $2.9B Acquisition</div>
+            <div class="cross-sub">Horizontal impact across all five decisions</div>
           </div>
         </div>
       </div>
-
-      <!-- ═══ DECISION 2 PANEL ═══ -->
-      <div class="panel" id="panel-d2">
-        <div class="panel-header">
-          <span class="panel-tag rec">RECOMMENDED · SEQUENTIAL PLAY</span>
-          <h2>NBIX-Led Internal Densification</h2>
-          <p class="lead">B5 termination first. Densification submittal second (mid-May). Gemdale receives the package with their leverage already gone.</p>
-        </div>
-
-        <p>Fire the §40.3.2 B5 termination notice on May 1. Send a cover letter the same day pre-signaling the densification submittal. File the full §10 alterations package two to three weeks later — after NBIX finishes internal analysis and approves costs.</p>
-
-        <h4>Why Sequential Beats Simultaneous</h4>
-        <ul class="check-list">
-          <li><b>Inverts the §10 reasonableness analysis.</b> With no B5 growth path, any "parking / capacity" objection becomes pretextual</li>
-          <li>NBIX is Sole Occupant (§1.4) — narrows Gemdale's universe of "reasonable" objections to code and Building Systems only</li>
-          <li>Architect-sealed drawings + City plan check removes Gemdale's code-review authority (the AHJ adjudicates, not the landlord)</li>
-          <li>MEP calcs pre-answer Building Systems objections — HVAC, electrical load, life safety occupant count</li>
-          <li><b>If Gemdale obstructs anyway</b> — that behavior becomes evidence of landlord bad faith, ammunition for Decision 3</li>
-        </ul>
-
-        <div class="concern-box">
-          <h5>Downside Concerns — Every One Addressed</h5>
-          <div class="concern-item">
-            <span class="concern-q">"What if Gemdale drags out their response indefinitely?"</span>
-            §10's "shall not be... delayed" standard gives NBIX a breach claim after a reasonable period (typically 30 days). The submittal cover letter will explicitly request response within 30 days and reserve rights.
-          </div>
-          <div class="concern-item">
-            <span class="concern-q">"What if Gemdale conditions consent on something unrelated?"</span>
-            Unrelated conditioning is textbook unreasonable. "You can densify if you also exercise B5" is the exact kind of pretext §10 is designed to block.
-          </div>
-          <div class="concern-item">
-            <span class="concern-q">"If Gemdale refuses, do we proceed anyway?"</span>
-            Not without Cooley. But NBIX's options include specific performance, monetary damages, and offset against rent. The stronger play is specific performance — a ruling that the denial was unreasonable is itself evidence in Decision 3.
-          </div>
-        </div>
-
-        <h3>Anticipated Gemdale Objections — Pre-Answered</h3>
-        <div class="obj-grid">
-          <div class="obj-item">
-            <div class="obj-q">"Parking will be inadequate at higher density"</div>
-            <div class="obj-a">§1.7.1 grants NBIX exclusive parking as Sole Occupant. Run the math against the lease ratio. If density stays within ratio, <b>there is no lease violation</b>. Self-defeating argument: B5 would have added more parking demand than densification does.</div>
-          </div>
-          <div class="obj-item">
-            <div class="obj-q">"This violates building code"</div>
-            <div class="obj-a">Gemdale has no independent code-review authority. NBIX hires a licensed California architect, files for plan check with City of San Diego. The <b>Authority Having Jurisdiction adjudicates</b>. Any "code violation" claim without an actual plan-check denial is pretextual on its face.</div>
-          </div>
-          <div class="obj-item">
-            <div class="obj-q">"Building Systems can't handle it"</div>
-            <div class="obj-a">The only place Gemdale has a legitimate foothold. <b>MEP engineer runs the calcs</b> and either demonstrates existing capacity covers it, or scopes the upgrade work with NBIX as payor. Once on paper, Gemdale has nothing to object to.</div>
-          </div>
-          <div class="obj-item">
-            <div class="obj-q">"You need to exercise B5 instead"</div>
-            <div class="obj-a">§10 explicitly protects against conditioning consent on unrelated matters. This is <b>textbook unreasonable conditioning</b> — not just pretext, but the kind that creates a durable breach claim.</div>
-          </div>
-          <div class="obj-item">
-            <div class="obj-q">"We need more time / more studies"</div>
-            <div class="obj-a">§10's "shall not be... delayed" applies. Any further delay request must be <b>specific and objectively justified</b>. Vague "we're reviewing" after 30 days is itself breach.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ═══ DECISION 3 PANEL ═══ -->
-      <div class="panel" id="panel-d3">
-        <div class="panel-header">
-          <span class="panel-tag rec">RECOMMENDED · CHAD'S WORKAROUND</span>
-          <h2>Creditor-Driven Extinguishment</h2>
-          <p class="lead">Don't negotiate with Gemdale equity — replace their creditors and force deed-in-lieu. Gemdale gets $0. Timeline: 90–120 days.</p>
-        </div>
-
-        <p>Partner acquires the Invesco mezz at par ($100M) instead of letting King Street refinance it. Partner acquires or controls the OZK senior. Partner then offers Gemdale a deed-in-lieu + release from OZK personal guarantees. If Gemdale refuses, UCC Article 9 non-judicial foreclosure on the mezz. NBIX's absolute NNN lease survives foreclosure.</p>
-
-        <h4>Why This Path Wins</h4>
-        <ul class="check-list">
-          <li><b>Gemdale gets $0</b> — no reward for being a blocking party. Their equity is illusion ($0–30M against a depressed campus value)</li>
-          <li><b>Decisions 1 and 2 depress their narrative</b> — no growth premium, no expansion story, densification confirms stabilized-only thesis</li>
-          <li><b>Any §10 obstruction in Decision 2</b> becomes evidence of landlord bad faith — reinforces creditor rationale</li>
-          <li>90–120 day timeline vs. 6–9 months for negotiation or 12–24+ for foreclosure-then-bankruptcy</li>
-          <li>Partner basis ~$540–575M (post-squeeze) — lower than original $575M estimate because Decisions 1 and 2 do the work</li>
-          <li><b>Kurt's question tomorrow:</b> "Will Invesco sell at par to our partner instead of to King Street?" Invesco is indifferent to counterparty</li>
-          <li>Partners in sequence: Breakthrough (warm, primary) · BioMed · Healthpeak · Alexandria</li>
-        </ul>
-
-        <div class="concern-box">
-          <h5>Downside Concerns — Every One Addressed</h5>
-          <div class="concern-item">
-            <span class="concern-q">"Doesn't this require Gemdale's cooperation?"</span>
-            No — Gemdale accepts because the alternative is worse: UCC Article 9 foreclosure that crystallizes OZK personal guarantees. The release-from-guarantee is the carrot; foreclosure is the stick.
-          </div>
-          <div class="concern-item">
-            <span class="concern-q">"What if Gemdale files Chapter 11?"</span>
-            Mezz foreclosure doesn't trigger senior default and doesn't automatically draw bankruptcy. The mezz UCC Art. 9 path was confirmed non-judicial in 2025. The NNN lease survives foreclosure.
-          </div>
-          <div class="concern-item">
-            <span class="concern-q">"Does OZK actually hold personal guarantees?"</span>
-            <b>Load-bearing question — Cooley confirms Thursday.</b> If yes, Branch B proceeds as designed. If no, we need a different pressure point.
-          </div>
-        </div>
-
-        <div class="stats-row">
-          <div><div class="stat-val g">$0</div><div class="stat-lbl">To Gemdale</div></div>
-          <div><div class="stat-val g">~$540–575M</div><div class="stat-lbl">Partner Basis</div></div>
-          <div><div class="stat-val g">90–120d</div><div class="stat-lbl">Title Transfer</div></div>
-          <div><div class="stat-val g">Survives</div><div class="stat-lbl">NBIX NNN Lease</div></div>
-        </div>
-
-        <h3>Alternative: Negotiated Gemdale Exit</h3>
-        <div class="opt-card warn">
-          <div class="opt-title">Leggett's Path — Pay $20–30M to Go Quietly</div>
-          <p>Partner offers Gemdale $20–30M to cooperate. Basis lands at ~$540–560M. Leggett's Monday pivot: "cheaper than 12–24 month foreclosure limbo."</p>
-          <ul class="x-list">
-            <li><b>Assumes Gemdale negotiates in good faith</b> — they won't. Your read: "greedy and difficult"</li>
-            <li>$20–30M becomes floor, not ceiling — escalation is their rational move</li>
-            <li>Validates leverage Gemdale doesn't actually hold</li>
-          </ul>
-        </div>
-
-        <h3>Defensive Fallback: The Long Game</h3>
-        <div class="opt-card warn">
-          <div class="opt-title">Wait for §40.5 ROFO Trigger</div>
-          <p>NBIX stays passive. When Gemdale is forced into distressed sale, §40.4 ROFR fires on any bona fide third-party offer.</p>
-          <ul class="x-list">
-            <li>12–24+ months; partner window closes</li>
-            <li><b>§40.6 extinguishment risk</b> — 10-business-day hard window; miss it and rights die permanently</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- ═══ DECISION 4 PANEL ═══ -->
-      <div class="panel" id="panel-d4">
-        <div class="panel-header">
-          <span class="panel-tag rec">PRIMARY · WARM RELATIONSHIP</span>
-          <h2>Partner Selection — Breakthrough Properties</h2>
-          <p class="lead">Partner buys distressed debt, executes the creditor-driven path, becomes NBIX's long-term landlord.</p>
-        </div>
-
-        <div class="opt-card rec">
-          <div class="opt-title">A. Breakthrough Properties</div>
-          <p>Existing JLL relationship (Governor Pointe work with Greg/Dan). Moves on distressed life sciences debt. Disciplined underwriting. Smaller platform = Aperture is a top-3 asset, meaningful asset-management attention.</p>
-          <ul class="check-list">
-            <li>Warm introduction path — zero cold-call friction</li>
-            <li>Proven appetite for single-asset distressed debt plays</li>
-            <li>NBIX leverage stronger with a platform where Aperture is material vs. a REIT where it's rounding</li>
-          </ul>
-        </div>
-
-        <h4>Secondary Options</h4>
-        <div class="opt-card">
-          <div class="opt-title">B. BioMed Realty</div>
-          <p>Blackstone-backed, significant dry powder. Life sciences specialist. Faster closing. Larger platform — NBIX is one of many.</p>
-        </div>
-        <div class="opt-card">
-          <div class="opt-title">C. Healthpeak Properties</div>
-          <p>Occupancy recovery thesis aligns with Aperture's stability. Public REIT — transparent pricing. 2025 occupancy pressure may slow decision cycle.</p>
-        </div>
-        <div class="opt-card">
-          <div class="opt-title">D. Alexandria Real Estate Equities</div>
-          <p>Deepest operator expertise. Q4 2025 earnings miss + dividend cut + negative 2026 guidance = distracted. Negotiates from Megacampus strategy, not single-asset economics.</p>
-        </div>
-      </div>
-
-      <!-- ═══ DECISION 5 PANEL ═══ -->
-      <div class="panel" id="panel-d5">
-        <div class="panel-header">
-          <span class="panel-tag rec">JLL RECOMMENDED</span>
-          <h2>Buy + Densify + Kilroy CDS Option</h2>
-          <p class="lead">Minimum-regret path — capital scales with pipeline milestones. Converts Aperture from rent line into controlled strategic asset.</p>
-        </div>
-
-        <div class="opt-card rec">
-          <div class="opt-title">A. Buy Aperture + Densify + Kilroy CDS</div>
-          <p>Phase 1 (2026): Densification fills near-term capacity gap. Phase 2 (2026–27): Acquire Aperture via creditor-driven path. Phase 3 (2028+): Exercise Kilroy CDS as phased option if Phase 3 data supports launch infrastructure.</p>
-          <ul class="check-list">
-            <li>Minimum-regret path — capital scales with pipeline milestones</li>
-            <li>Densification buys 3–5 years of runway at a fraction of B5 / new-campus cost</li>
-            <li>Converts Aperture from rent line into controlled strategic asset</li>
-            <li>Preserves Kilroy optionality without committing ahead of clinical data</li>
-            <li>Absorbs Soleno integration without new footprint commitment</li>
-          </ul>
-        </div>
-
-        <h4>Alternatives</h4>
-        <div class="opt-card">
-          <div class="opt-title">B. Buy Aperture + New 1M+ SF Campus</div>
-          <p>36–48 month build. Starting 2027 means 2030–2031 occupancy. $1B+ capex. Only triggers if densification is insufficient AND Phase 3 reads positive.</p>
-        </div>
-        <div class="opt-card">
-          <div class="opt-title">C. Buy Aperture + Boston/Bay Bi-Coastal Beachhead</div>
-          <p>Distributes growth to talent-dense markets. Counterbalances SD concentration. Per-SF cost 40–60% higher.</p>
-        </div>
-        <div class="opt-card warn">
-          <div class="opt-title">D. Lease-Only Status Quo</div>
-          <p>Matt Abernathy's original mandate. Preserves capital. Concedes Aperture ownership window to a sophisticated REIT buyer.</p>
-        </div>
-      </div>
-
-      <!-- ═══ SOLENO PANEL ═══ -->
-      <div class="panel" id="panel-soleno">
-        <div class="panel-header">
-          <span class="panel-tag amber">HORIZONTAL IMPACT</span>
-          <h2>Soleno $2.9B Acquisition — Cross-Cutting Effects</h2>
-          <p class="lead">The Soleno acquisition touches every decision in the tree. It is not a separate decision — it is a condition that changes the math on all five.</p>
-        </div>
-
-        <h4>Impact by Decision</h4>
-        <div class="opt-card">
-          <div class="opt-title">Decision 1 — B5 Termination</div>
-          <p>Confirms Aperture as anchor. Soleno integration will be absorbed into existing campus — reinforces the case that B5 is unnecessary overhead.</p>
-        </div>
-        <div class="opt-card">
-          <div class="opt-title">Decision 2 — Densification</div>
-          <p>Headcount ramp from Soleno must overlay the densification baseline. Accelerates the urgency of the §10 submittal.</p>
-        </div>
-        <div class="opt-card">
-          <div class="opt-title">Decision 3 — Ownership</div>
-          <p>Cash drain from the $2.9B acquisition favors non-cash structures. Strengthens the case for creditor-driven path (partner-funded) over direct purchase.</p>
-        </div>
-        <div class="opt-card">
-          <div class="opt-title">Decision 4 — Partner Selection</div>
-          <p>Soleno's pipeline additions make Aperture more attractive to partners — stronger NOI story, longer lease duration implied by growth.</p>
-        </div>
-        <div class="opt-card">
-          <div class="opt-title">Decision 5 — Expansion</div>
-          <p>Accelerates expansion trigger. Inherited Soleno facilities may provide interim capacity, but long-term integration favors campus consolidation.</p>
-        </div>
-      </div>
-
-      <!-- ═══ TIMELINE GATE PANELS ═══ -->
-      <div class="panel" id="panel-gate-b5">
-        <div class="panel-header">
-          <span class="panel-tag warn">MAY 1 · 9 DAYS</span>
-          <h2>B5 Termination Notice</h2>
-        </div>
-        <p>§40.3.2 sole-discretion right exercised. Cover letter pre-signals densification submittal. ROFR/ROFO/renewals remain intact. $68–73M NPV liability eliminated.</p>
-        <p><b>Action required:</b> Cooley finalizes notice language. NBIX Real Estate signs. Delivered by email and certified mail to Gemdale per §37.14.</p>
-      </div>
-
-      <div class="panel" id="panel-gate-dens">
-        <div class="panel-header">
-          <span class="panel-tag warn">MID-MAY</span>
-          <h2>Densification §10 Submittal</h2>
-        </div>
-        <p>NBIX internal analysis complete, costs approved, architect-sealed drawings, MEP calcs, parking analysis, code compliance preamble, 30-day response request with rights reserved.</p>
-        <p><b>Dependency:</b> B5 termination notice must be sent first to invert the §10 reasonableness analysis.</p>
-      </div>
-
-      <div class="panel" id="panel-gate-inv">
-        <div class="panel-header">
-          <span class="panel-tag info">END MAY</span>
-          <h2>Invesco Path Clear</h2>
-        </div>
-        <p>Kurt's meeting tomorrow determines whether Invesco will sell their $100M mezz position at par to our partner instead of to King Street. Single answer determines whether Decision 3 Branch B opens in 90 days or 12 months.</p>
-        <p><b>The reframed question:</b> Not "does Invesco want to extend?" but "will Invesco sell at par to a counterparty we designate?"</p>
-      </div>
-
-      <div class="panel" id="panel-gate-403">
-        <div class="panel-header">
-          <span class="panel-tag info">JUNE 30</span>
-          <h2>§40.3.2 Hard Deadline</h2>
-        </div>
-        <p>Absolute backstop for B5 termination notice. If notice is not sent by June 30, 2026, the termination right under §40.3.2 lapses. The Expansion Option stays live until ~Feb 2028, keeping the $68–73M auto-extension liability alive.</p>
-        <p><b>May 1 target provides 60 days of margin</b> and enables the sequential densification play.</p>
-      </div>
-
-      <div class="panel" id="panel-gate-own">
-        <div class="panel-header">
-          <span class="panel-tag rec">Q3–Q4 2026</span>
-          <h2>Ownership Resolution</h2>
-        </div>
-        <p>If the creditor-driven path proceeds on schedule: partner acquires Invesco mezz (Q2), controls OZK senior (Q2-Q3), offers deed-in-lieu (Q3), title transfers (Q3-Q4). NBIX's NNN lease survives throughout.</p>
-      </div>
-
-      <div class="panel" id="panel-gate-campus">
-        <div class="panel-header">
-          <span class="panel-tag info">2028</span>
-          <h2>Full Campus Control</h2>
-        </div>
-        <p>Under the recommended path: NBIX owns Aperture through a partner structure, densification is complete, Kilroy CDS option is available for Phase 3 expansion, and Soleno integration is absorbed. Aperture transitions from a rent line to a controlled strategic asset.</p>
-      </div>
-
     </div>
   </div>
 
-  <div class="app-footer">
-    <div class="footer-jll">
-      <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="25" cy="25" r="23" fill="#DE0614"/>
-        <text x="25" y="32" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF" letter-spacing="0.5">JLL</text>
-      </svg>
-      <span style="font-weight:600;color:var(--title);">JLL Life Sciences</span>
+  <!-- ═══ DETAIL SECTION ═══ -->
+  <div class="detail-section" id="detailSection">
+
+    <!-- D1 -->
+    <div class="detail-panel" id="panel-d1">
+      <div class="detail-summary">
+        <span class="detail-tag rec">RECOMMENDED · URGENT</span>
+        <h2 class="detail-h2">Terminate the B5 Expansion Option</h2>
+        <p class="detail-lead">Exercise §40.3.2 sole-discretion termination right by May 1. Eliminates $68–73M NPV auto-extension liability and strips Gemdale's growth-premium selling point.</p>
+        <div class="stat-cards">
+          <div class="stat-card"><div class="stat-val r">$68–73M</div><div class="stat-lbl">NPV Eliminated</div><div class="stat-ctx">Auto-extension liability removed</div></div>
+          <div class="stat-card"><div class="stat-val r">9 days</div><div class="stat-lbl">To May 1 Target</div><div class="stat-ctx">60-day margin to June 30 backstop</div></div>
+          <div class="stat-card"><div class="stat-val g">Preserved</div><div class="stat-lbl">ROFR / ROFO / Renewals</div><div class="stat-ctx">All other rights remain intact</div></div>
+          <div class="stat-card"><div class="stat-val p">–$40–60M</div><div class="stat-lbl">Growth Premium Stripped</div><div class="stat-ctx">Feeds Valuation Squeeze thesis</div></div>
+        </div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Why Terminate — The Strategic Logic</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <ul class="ck-list">
+            <li><b>Eliminates $68–73M NPV auto-extension liability</b> — the single largest quantifiable risk on the campus</li>
+            <li>Removes Gemdale's "150K SF ready to build" selling point — no more growth premium in their OZK narrative</li>
+            <li><b>Sequence matters:</b> Fire before densification submittal to remove obstruction motive</li>
+            <li>ROFR, ROFO, renewal options, and all other lease rights remain fully intact</li>
+            <li>Cover letter same day pre-signals the densification submittal — Gemdale receives the package with their leverage already gone</li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Downside Concerns — Every One Addressed</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <div class="concern-box"><h5>Concerns Addressed</h5>
+            <div class="concern-item"><span class="concern-q">"What if NBIX needs that expansion space later?"</span><span class="concern-a">Densification buys 3–5 years of runway. Kilroy CDS option provides 2028+ expansion path at lower cost and without Gemdale involvement. B5 was always the most expensive growth path.</span></div>
+            <div class="concern-item"><span class="concern-q">"Does this hurt our negotiating position with Gemdale?"</span><span class="concern-a">The opposite. B5 termination removes Gemdale's strongest card. Their campus story to OZK collapses from "growth campus" to "stabilized NNN" — exactly where we want them for Decision 3.</span></div>
+            <div class="concern-item"><span class="concern-q">"What if we miss the May 1 target?"</span><span class="concern-a">June 30 is the hard backstop under §40.3.2. May 1 provides 60 days of margin and enables the sequential densification play. Missing May 1 is recoverable; missing June 30 is not.</span></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Required Actions</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <ul class="ck-list">
+            <li>Cooley finalizes notice language (Thursday agenda item)</li>
+            <li>NBIX Real Estate signs the notice</li>
+            <li>Delivered by email and certified mail to Gemdale per §37.14</li>
+            <li>Cover letter pre-signals densification submittal</li>
+          </ul>
+        </div></div>
+      </div>
     </div>
-    <div class="footer-line">Urie · Schoneman · Leggett · Luedtke &nbsp;|&nbsp; West Coast Practice Group</div>
-    <div class="footer-conf">Confidential — Prepared for Neurocrine Biosciences Internal Use</div>
+
+    <!-- D2 -->
+    <div class="detail-panel" id="panel-d2">
+      <div class="detail-summary">
+        <span class="detail-tag rec">RECOMMENDED · SEQUENTIAL PLAY</span>
+        <h2 class="detail-h2">NBIX-Led Internal Densification</h2>
+        <p class="detail-lead">B5 termination first. Densification submittal second (mid-May). Gemdale receives the package with their leverage already gone.</p>
+        <div class="stat-cards">
+          <div class="stat-card"><div class="stat-val g">3–5 yr</div><div class="stat-lbl">Runway Added</div><div class="stat-ctx">Fraction of B5 / new-campus cost</div></div>
+          <div class="stat-card"><div class="stat-val g">§10</div><div class="stat-lbl">Legal Basis</div><div class="stat-ctx">"Not unreasonably withheld"</div></div>
+          <div class="stat-card"><div class="stat-val r">6</div><div class="stat-lbl">Objections Pre-Answered</div><div class="stat-ctx">Every Gemdale argument addressed</div></div>
+        </div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Why Sequential Beats Simultaneous</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <p class="content-p">Fire the §40.3.2 B5 termination notice on May 1. Send a cover letter the same day pre-signaling the densification submittal. File the full §10 alterations package two to three weeks later — after NBIX finishes internal analysis and approves costs.</p>
+          <ul class="ck-list">
+            <li><b>Inverts the §10 reasonableness analysis.</b> With no B5 growth path, any "parking / capacity" objection becomes pretextual</li>
+            <li>NBIX is Sole Occupant (§1.4) — narrows Gemdale's universe of "reasonable" objections to code and Building Systems only</li>
+            <li>Architect-sealed drawings + City plan check removes Gemdale's code-review authority (the AHJ adjudicates, not the landlord)</li>
+            <li>MEP calcs pre-answer Building Systems objections — HVAC, electrical load, life safety occupant count</li>
+            <li><b>If Gemdale obstructs anyway</b> — that behavior becomes evidence of landlord bad faith, ammunition for Decision 3</li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Downside Concerns — Every One Addressed</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <div class="concern-box"><h5>Concerns Addressed</h5>
+            <div class="concern-item"><span class="concern-q">"What if Gemdale drags out their response indefinitely?"</span><span class="concern-a">§10's "shall not be... delayed" standard gives NBIX a breach claim after a reasonable period (typically 30 days). The submittal cover letter will explicitly request response within 30 days and reserve rights.</span></div>
+            <div class="concern-item"><span class="concern-q">"What if Gemdale conditions consent on something unrelated?"</span><span class="concern-a">Unrelated conditioning is textbook unreasonable. "You can densify if you also exercise B5" is the exact kind of pretext §10 is designed to block.</span></div>
+            <div class="concern-item"><span class="concern-q">"If Gemdale refuses, do we proceed anyway?"</span><span class="concern-a">Not without Cooley. But NBIX's options include specific performance, monetary damages, and offset against rent. The stronger play is specific performance — a ruling that the denial was unreasonable is itself evidence in Decision 3.</span></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Anticipated Gemdale Objections — Pre-Answered</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <div class="obj-grid">
+            <div class="obj-item"><div class="obj-q">"Parking will be inadequate at higher density"</div><div class="obj-a">§1.7.1 grants NBIX exclusive parking as Sole Occupant. Run the math against the lease ratio. If density stays within ratio, <b>there is no lease violation</b>. Self-defeating argument: B5 would have added more parking demand than densification does.</div></div>
+            <div class="obj-item"><div class="obj-q">"This violates building code"</div><div class="obj-a">Gemdale has no independent code-review authority. NBIX hires a licensed California architect, files for plan check with City of San Diego. The <b>Authority Having Jurisdiction adjudicates</b>. Any "code violation" claim without an actual plan-check denial is pretextual on its face.</div></div>
+            <div class="obj-item"><div class="obj-q">"Building Systems can't handle it"</div><div class="obj-a">The only place Gemdale has a legitimate foothold. <b>MEP engineer runs the calcs</b> and either demonstrates existing capacity covers it, or scopes the upgrade work with NBIX as payor. Once on paper, Gemdale has nothing to object to.</div></div>
+            <div class="obj-item"><div class="obj-q">"You need to exercise B5 instead"</div><div class="obj-a">§10 explicitly protects against conditioning consent on unrelated matters. This is <b>textbook unreasonable conditioning</b> — not just pretext, but the kind that creates a durable breach claim.</div></div>
+            <div class="obj-item"><div class="obj-q">"We need more time / more studies"</div><div class="obj-a">§10's "shall not be... delayed" applies. Any further delay request must be <b>specific and objectively justified</b>. Vague "we're reviewing" after 30 days is itself breach.</div></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- D3 -->
+    <div class="detail-panel" id="panel-d3">
+      <div class="detail-summary">
+        <span class="detail-tag rec">RECOMMENDED · CREDITOR-DRIVEN</span>
+        <h2 class="detail-h2">Creditor-Driven Extinguishment</h2>
+        <p class="detail-lead">Don't negotiate with Gemdale equity — replace their creditors and force deed-in-lieu. Gemdale gets $0. Timeline: 90–120 days.</p>
+        <div class="stat-cards">
+          <div class="stat-card"><div class="stat-val g">$0</div><div class="stat-lbl">To Gemdale</div><div class="stat-ctx">No reward for blocking</div></div>
+          <div class="stat-card"><div class="stat-val g">~$540–575M</div><div class="stat-lbl">Partner Basis</div><div class="stat-ctx">Post-squeeze valuation</div></div>
+          <div class="stat-card"><div class="stat-val g">90–120d</div><div class="stat-lbl">Title Transfer</div><div class="stat-ctx">vs. 6–9 months negotiated</div></div>
+          <div class="stat-card"><div class="stat-val g">Survives</div><div class="stat-lbl">NBIX NNN Lease</div><div class="stat-ctx">Absolute NNN survives foreclosure</div></div>
+        </div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>The Mechanics — How It Works</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <p class="content-p">Partner acquires the Invesco mezz at par ($100M) instead of letting King Street refinance it. Partner acquires or controls the OZK senior. Partner then offers Gemdale a deed-in-lieu + release from OZK personal guarantees. If Gemdale refuses, UCC Article 9 non-judicial foreclosure on the mezz. NBIX's absolute NNN lease survives foreclosure.</p>
+          <ul class="ck-list">
+            <li><b>Gemdale gets $0</b> — no reward for being a blocking party. Their equity is illusion ($0–30M against a depressed campus value)</li>
+            <li><b>Decisions 1 and 2 depress their narrative</b> — no growth premium, no expansion story, densification confirms stabilized-only thesis</li>
+            <li><b>Any §10 obstruction in Decision 2</b> becomes evidence of landlord bad faith — reinforces creditor rationale</li>
+            <li>90–120 day timeline vs. 6–9 months for negotiation or 12–24+ for foreclosure-then-bankruptcy</li>
+            <li>Partner basis ~$540–575M (post-squeeze) — lower than original $575M estimate because Decisions 1 and 2 do the work</li>
+            <li><b>Kurt's question tomorrow:</b> "Will Invesco sell at par to our partner instead of to King Street?" Invesco is indifferent to counterparty</li>
+          </ul>
+        </div></div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Downside Concerns — Every One Addressed</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <div class="concern-box"><h5>Concerns Addressed</h5>
+            <div class="concern-item"><span class="concern-q">"Doesn't this require Gemdale's cooperation?"</span><span class="concern-a">No — Gemdale accepts because the alternative is worse: UCC Article 9 foreclosure that crystallizes OZK personal guarantees. The release-from-guarantee is the carrot; foreclosure is the stick.</span></div>
+            <div class="concern-item"><span class="concern-q">"What if Gemdale files Chapter 11?"</span><span class="concern-a">Mezz foreclosure doesn't trigger senior default and doesn't automatically draw bankruptcy. The mezz UCC Art. 9 path was confirmed non-judicial in 2025. The NNN lease survives foreclosure.</span></div>
+            <div class="concern-item"><span class="concern-q">"Does OZK actually hold personal guarantees?"</span><span class="concern-a"><b>Load-bearing question — Cooley confirms Thursday.</b> If yes, Branch B proceeds as designed. If no, we need a different pressure point.</span></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle" onclick="toggleDepth(this)">
+          <h3>Alternatives — Why They're Weaker</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body"><div class="depth-content">
+          <div class="opt-card warn"><div class="opt-title">Negotiated Gemdale Exit — Pay $20–30M to Go Quietly</div><p>Partner offers Gemdale $20–30M to cooperate. Basis lands at ~$540–560M. Leggett's Monday pivot: "cheaper than 12–24 month foreclosure limbo."</p>
+            <ul class="xk-list"><li><b>Assumes Gemdale negotiates in good faith</b> — they won't. Your read: "greedy and difficult"</li><li>$20–30M becomes floor, not ceiling — escalation is their rational move</li><li>Validates leverage Gemdale doesn't actually hold</li></ul>
+          </div>
+          <div class="opt-card warn"><div class="opt-title">Wait for §40.5 ROFO Trigger — The Long Game</div><p>NBIX stays passive. When Gemdale is forced into distressed sale, §40.4 ROFR fires on any bona fide third-party offer.</p>
+            <ul class="xk-list"><li>12–24+ months; partner window closes</li><li><b>§40.6 extinguishment risk</b> — 10-business-day hard window; miss it and rights die permanently</li></ul>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- D4 -->
+    <div class="detail-panel" id="panel-d4">
+      <div class="detail-summary">
+        <span class="detail-tag rec">PRIMARY · WARM RELATIONSHIP</span>
+        <h2 class="detail-h2">Partner Selection — Breakthrough Properties</h2>
+        <p class="detail-lead">Partner buys distressed debt, executes the creditor-driven path, becomes NBIX's long-term landlord.</p>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle open" onclick="toggleDepth(this)">
+          <h3>Candidate Assessment</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body open"><div class="depth-content">
+          <div class="opt-card rec"><div class="opt-title">A. Breakthrough Properties — Primary</div><p>Existing JLL relationship (Governor Pointe work with Greg/Dan). Moves on distressed life sciences debt. Disciplined underwriting. Smaller platform = Aperture is a top-3 asset, meaningful asset-management attention.</p>
+            <ul class="ck-list"><li>Warm introduction path — zero cold-call friction</li><li>Proven appetite for single-asset distressed debt plays</li><li>NBIX leverage stronger with a platform where Aperture is material vs. a REIT where it's rounding</li></ul>
+          </div>
+          <div class="opt-card"><div class="opt-title">B. BioMed Realty</div><p>Blackstone-backed, significant dry powder. Life sciences specialist. Faster closing. Larger platform — NBIX is one of many.</p></div>
+          <div class="opt-card"><div class="opt-title">C. Healthpeak Properties</div><p>Occupancy recovery thesis aligns with Aperture's stability. Public REIT — transparent pricing. 2025 occupancy pressure may slow decision cycle.</p></div>
+          <div class="opt-card"><div class="opt-title">D. Alexandria Real Estate Equities</div><p>Deepest operator expertise. Q4 2025 earnings miss + dividend cut + negative 2026 guidance = distracted. Negotiates from Megacampus strategy, not single-asset economics.</p></div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- D5 -->
+    <div class="detail-panel" id="panel-d5">
+      <div class="detail-summary">
+        <span class="detail-tag rec">JLL RECOMMENDED</span>
+        <h2 class="detail-h2">Buy + Densify + Kilroy CDS Option</h2>
+        <p class="detail-lead">Minimum-regret path — capital scales with pipeline milestones. Converts Aperture from rent line into controlled strategic asset.</p>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle open" onclick="toggleDepth(this)">
+          <h3>Recommended Path and Alternatives</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body open"><div class="depth-content">
+          <div class="opt-card rec"><div class="opt-title">A. Buy Aperture + Densify + Kilroy CDS</div><p>Phase 1 (2026): Densification fills near-term capacity gap. Phase 2 (2026–27): Acquire Aperture via creditor-driven path. Phase 3 (2028+): Exercise Kilroy CDS as phased option if Phase 3 data supports launch infrastructure.</p>
+            <ul class="ck-list"><li>Minimum-regret path — capital scales with pipeline milestones</li><li>Densification buys 3–5 years of runway at a fraction of B5 / new-campus cost</li><li>Converts Aperture from rent line into controlled strategic asset</li><li>Preserves Kilroy optionality without committing ahead of clinical data</li><li>Absorbs Soleno integration without new footprint commitment</li></ul>
+          </div>
+          <div class="opt-card"><div class="opt-title">B. Buy Aperture + New 1M+ SF Campus</div><p>36–48 month build. Starting 2027 means 2030–2031 occupancy. $1B+ capex. Only triggers if densification is insufficient AND Phase 3 reads positive.</p></div>
+          <div class="opt-card"><div class="opt-title">C. Buy Aperture + Boston/Bay Bi-Coastal Beachhead</div><p>Distributes growth to talent-dense markets. Counterbalances SD concentration. Per-SF cost 40–60% higher.</p></div>
+          <div class="opt-card warn"><div class="opt-title">D. Lease-Only Status Quo</div><p>Matt Abernathy's original mandate. Preserves capital. Concedes Aperture ownership window to a sophisticated REIT buyer.</p></div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Squeeze -->
+    <div class="detail-panel" id="panel-squeeze">
+      <div class="detail-summary">
+        <span class="detail-tag purple">STRATEGIC THESIS</span>
+        <h2 class="detail-h2">The Valuation Squeeze</h2>
+        <p class="detail-lead">Decisions 1 and 2 are not independent. Together, they depress Gemdale's campus valuation toward the partner basis target in Decision 3 — and away from the $600M+ Gemdale has been telling OZK.</p>
+        <div class="stat-cards">
+          <div class="stat-card"><div class="stat-val r">–$40–60M</div><div class="stat-lbl">B5 Strips</div><div class="stat-ctx">Growth premium removed</div></div>
+          <div class="stat-card"><div class="stat-val a">Caps Rate</div><div class="stat-lbl">Densification Confirms</div><div class="stat-ctx">Stabilized NNN only narrative</div></div>
+          <div class="stat-card"><div class="stat-val g">~$540–575M</div><div class="stat-lbl">Partner Basis Target</div><div class="stat-ctx">Down from $600M+ Gemdale narrative</div></div>
+        </div>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle open" onclick="toggleDepth(this)">
+          <h3>How the Squeeze Works</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body open"><div class="depth-content">
+          <p class="content-p">Two moves, one outcome. B5 termination strips the growth premium out of the campus story. Densification confirms NBIX solves growth internally, locking in a "stabilized NNN only" narrative that caps the cap rate.</p>
+          <p class="content-p">The result: Gemdale's campus value is pushed from $600M+ toward ~$540–575M — exactly the range where a partner can acquire the debt stack at an attractive basis and still offer NBIX favorable long-term terms.</p>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Soleno -->
+    <div class="detail-panel" id="panel-soleno">
+      <div class="detail-summary">
+        <span class="detail-tag amber">HORIZONTAL IMPACT</span>
+        <h2 class="detail-h2">Soleno $2.9B Acquisition — Cross-Cutting Effects</h2>
+        <p class="detail-lead">The Soleno acquisition touches every decision in the tree. It is not a separate decision — it is a condition that changes the math on all five.</p>
+      </div>
+      <div class="detail-depth">
+        <div class="depth-toggle open" onclick="toggleDepth(this)">
+          <h3>Impact by Decision</h3>
+          <svg class="depth-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="depth-body open"><div class="depth-content">
+          <div class="opt-card"><div class="opt-title">Decision 1 — B5 Termination</div><p>Confirms Aperture as anchor. Soleno integration will be absorbed into existing campus — reinforces the case that B5 is unnecessary overhead.</p></div>
+          <div class="opt-card"><div class="opt-title">Decision 2 — Densification</div><p>Headcount ramp from Soleno must overlay the densification baseline. Accelerates the urgency of the §10 submittal.</p></div>
+          <div class="opt-card"><div class="opt-title">Decision 3 — Ownership</div><p>Cash drain from the $2.9B acquisition favors non-cash structures. Strengthens the case for creditor-driven path (partner-funded) over direct purchase.</p></div>
+          <div class="opt-card"><div class="opt-title">Decision 4 — Partner Selection</div><p>Soleno's pipeline additions make Aperture more attractive to partners — stronger NOI story, longer lease duration implied by growth.</p></div>
+          <div class="opt-card"><div class="opt-title">Decision 5 — Expansion</div><p>Accelerates expansion trigger. Inherited Soleno facilities may provide interim capacity, but long-term integration favors campus consolidation.</p></div>
+        </div></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<script>
-function showPanel(id) {
-  // Hide all panels
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
-  document.getElementById('empty-state').style.display = 'none';
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-team">JLL Life Sciences · Urie · Schoneman · Leggett · Luedtke · West Coast Practice Group</div>
+  <div class="footer-conf">Confidential — Prepared for Neurocrine Biosciences Internal Use</div>
+</footer>
 
-  // Show target panel
+<script>
+let activeNodeId = null;
+
+function activateNode(id) {
+  if (activeNodeId === id) { closeDetail(); return; }
+  activeNodeId = id;
+
+  // Clear all active states
+  document.querySelectorAll('.d-node, .cross-node, .tl-gate').forEach(el => el.classList.remove('active'));
+
+  // Activate node + timeline gate
+  const node = document.getElementById('node-' + id);
+  if (node) node.classList.add('active');
+  const gate = document.querySelector('.tl-gate[data-node="' + id + '"]');
+  if (gate) gate.classList.add('active');
+
+  // Show correct panel
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
   const panel = document.getElementById('panel-' + id);
   if (panel) {
     panel.classList.add('visible');
-    // Scroll panel into view on mobile
-    if (window.innerWidth <= 900) {
-      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      document.querySelector('.data-pane').scrollTop = 0;
-    }
-  }
-
-  // Update active states on tree nodes
-  document.querySelectorAll('.tree-node, .squeeze-mini, .soleno-bar').forEach(n => n.classList.remove('active'));
-  const activeNode = document.querySelector('[data-panel="' + id + '"]');
-  if (activeNode) {
-    activeNode.classList.add('active');
-    // Scroll the tree node into view in the left pane
-    activeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  // Update active pill
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active-pill'));
-}
-
-function showFromTimeline(decisionId, gateId) {
-  // Show the decision panel (the full strategic data, not the thin gate summary)
-  showPanel(decisionId);
-
-  // Highlight the pill that was clicked
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active-pill'));
-  const clickedPill = event.currentTarget;
-  clickedPill.classList.add('active-pill');
-
-  // Also highlight the corresponding tree node
-  document.querySelectorAll('.tree-node, .squeeze-mini, .soleno-bar').forEach(n => n.classList.remove('active'));
-  const treeNode = document.querySelector('[data-panel="' + decisionId + '"]');
-  if (treeNode) {
-    treeNode.classList.add('active');
-    treeNode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const section = document.getElementById('detailSection');
+    section.classList.add('open');
+    setTimeout(() => { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
   }
 }
+
+function closeDetail() {
+  activeNodeId = null;
+  document.querySelectorAll('.d-node, .cross-node, .tl-gate').forEach(el => el.classList.remove('active'));
+  const section = document.getElementById('detailSection');
+  section.classList.remove('open');
+  setTimeout(() => { document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible')); }, 400);
+}
+
+function toggleDepth(toggle) {
+  const body = toggle.nextElementSibling;
+  toggle.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// Keyboard nav
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeDetail();
+  const nodes = ['d1','d2','d3','d4','d5'];
+  const idx = nodes.indexOf(activeNodeId);
+  if (e.key === 'ArrowRight' && idx < nodes.length - 1) activateNode(nodes[idx + 1]);
+  else if (e.key === 'ArrowLeft' && idx > 0) activateNode(nodes[idx - 1]);
+});
 </script>
 </body>
 </html>
